@@ -1,0 +1,127 @@
+{
+  "profiles" : [ 
+  {
+      "profile": "dns_p1_dns_request_count",
+      "foreach": "ip_src_addr",
+      "onlyif": "source.type == 'bro' && protocol == 'dns'",
+      "init": {
+        "count": "0"
+      },
+      "update": {
+        "count": "count + 1"
+      },
+      "result": "count"
+  },
+  {
+    "profile": "dns_p2_dns_distinct_request",
+    "foreach": "ip_src_addr",
+    "onlyif": "source.type == 'bro' && protocol == 'dns' && query != null",
+    "init": {
+      "total": "HLLP_INIT(5,6)"
+    },
+    "update": {
+      "total": "HLLP_ADD(total, query)"
+    },
+    "result": "total"
+  },
+  {
+    "profile": "dns_p6_dns_mx_queries",
+    "foreach": "ip_src_addr",
+    "onlyif": "source.type == 'bro' && protocol == 'dns' && qtype_name == 'MX'",
+    "init": {
+      "count": "0"
+    },
+    "update": {
+      "count": "count + 1"
+    },
+    "result": "count"
+  },
+  {
+    "profile": "dns_p7_dns_ptr_queries",
+    "foreach": "ip_src_addr",
+    "onlyif": "source.type == 'bro' && protocol == 'dns' && qtype_name == 'PTR'",
+    "init": {
+      "count": "0"
+    },
+    "update": {
+      "count": "count + 1"
+    },
+    "result": "count"
+  },  
+  {
+    "profile": "dns_p8_dns_distinct_dns_servers",
+    "foreach": "ip_src_addr",
+    "onlyif": "source.type == 'bro' && protocol == 'dns' && query != null",
+    "init": {
+      "total": "HLLP_INIT(5,6)"
+    },
+    "update": {
+      "total": "HLLP_ADD(total, ip_dst_addr)"
+    },
+    "result": "total"
+  },
+  {
+    "profile": "dns_p9_dns_distinct_top_level_domain",
+    "foreach": "ip_src_addr",
+    "onlyif": "source.type == 'bro' && protocol == 'dns' && top_level_domain != null",
+    "init": {
+      "total": "HLLP_INIT(5,6)"
+    },
+    "update": {
+      "total": "HLLP_ADD(total, top_level_domain)"
+    },
+    "result": "total"
+  },
+  {
+    "profile": "dns_p10_dns_distinct_second_level_domain",
+    "foreach": "ip_src_addr",
+    "onlyif": "source.type == 'bro' && protocol == 'dns' && second_level_domain != null",
+    "init": {
+      "total": "HLLP_INIT(5,6)"
+    },
+    "update": {
+      "total": "HLLP_ADD(total, second_level_domain)"
+    },
+    "result": "total"
+  },
+  {
+    "profile": "dns_p12_dns_num_failed_responses",
+    "foreach": "ip_src_addr",
+    "onlyif": "source.type == 'bro' && protocol == 'dns' && rcode_name != 'NXDOMAIN'",
+      "init": {
+        "count": "0"
+      },
+      "update": {
+        "count": "count + 1"
+      },
+      "result": "count"
+  },
+  {
+    "profile": "dns_p13_dns_distinct_resolved_ip_cities",
+    "foreach": "ip_src_addr",
+    "onlyif": "source.type == 'bro' && protocol == 'dns' && exists(answers)",
+    "init": {
+      "total": "HLLP_INIT(5,6)"
+    },
+    "update": {
+      "total": "MAP(FILTER(answers, (answer) -> IS_IP(answer)), (ip) -> HLLP_ADD(total, GEO_GET(ip, ['city'])))"
+      "total": "MAP(FILTER(answers, (answer) -> IS_IP(answer)), (ip) -> HLLP_ADD(total, GEO_GET(ip, ['country'])))"
+    },
+    "result": "total"
+  },
+  {
+    "profile": "dns_p14_dns_distinct_resolved_ip_countries",
+    "foreach": "ip_src_addr",
+    "onlyif": "source.type == 'bro' && protocol == 'dns' && exists(answers)",
+    "init": {
+      "total": "HLLP_INIT(5,6)"
+    },
+    "update": {
+      "total": "MAP(FILTER(answers, (answer) -> IS_IP(answer)), (ip) -> HLLP_ADD(total, GEO_GET(ip, ['country'])))"
+    },
+    "result": "total"
+  },
+
+],
+"timestampField": "timestamp"
+}
