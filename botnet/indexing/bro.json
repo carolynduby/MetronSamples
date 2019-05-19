@@ -1,0 +1,1 @@
+{"hdfs":{"batchSize":5,"enabled":true,"index":"bro"},"elasticsearch":{"batchSize":5,"enabled":true,"index":"bro"},"solr":{"batchSize":300,"enabled":true,"index":"bro"}}
