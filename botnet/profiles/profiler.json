@@ -25,6 +25,18 @@
     "result": "total"
   },
   {
+    "profile": "dns_p3_domain_request_count",
+    "foreach": "ip_src_addr",
+    "onlyif": "source.type == 'bro' && protocol == 'dns' && query != null",
+    "init": {
+      "req_per_domain": "MULTISET_INIT()"
+    },
+    "update": {
+      "req_per_domain": "MULTISET_ADD(req_per_domain, query)"
+    },
+    "result": "req_per_domain"
+  },
+  {
     "profile": "dns_p6_dns_mx_queries",
     "foreach": "ip_src_addr",
     "onlyif": "source.type == 'bro' && protocol == 'dns' && qtype_name == 'MX'",
