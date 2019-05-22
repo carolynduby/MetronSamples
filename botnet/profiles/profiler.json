@@ -99,7 +99,7 @@
   {
     "profile": "dns_p12_dns_num_failed_responses",
     "foreach": "ip_src_addr",
-    "onlyif": "source.type == 'bro' && protocol == 'dns' && rcode_name != 'NXDOMAIN'",
+    "onlyif": "source.type == 'bro' && protocol == 'dns' && exists(rcode_name) && rcode_name == 'NXDOMAIN'",
       "init": {
         "count": "0"
       },
@@ -116,8 +116,7 @@
       "total": "HLLP_INIT(5,6)"
     },
     "update": {
-      "total": "MAP(FILTER(answers, (answer) -> IS_IP(answer)), (ip) -> HLLP_ADD(total, GEO_GET(ip, ['city'])))"
-      "total": "MAP(FILTER(answers, (answer) -> IS_IP(answer)), (ip) -> HLLP_ADD(total, GEO_GET(ip, ['country'])))"
+      "total": "REDUCE(FILTER(answers, (answer) -> IS_IP(answer)), (city_card, ip) -> HLLP_ADD(city_card, GEO_GET(ip, ['city'])), total)"
     },
     "result": "total"
   },
@@ -129,10 +128,10 @@
       "total": "HLLP_INIT(5,6)"
     },
     "update": {
-      "total": "MAP(FILTER(answers, (answer) -> IS_IP(answer)), (ip) -> HLLP_ADD(total, GEO_GET(ip, ['country'])))"
+      "total": "REDUCE(FILTER(answers, (answer) -> IS_IP(answer)), (country_card, ip) -> HLLP_ADD(country_card, GEO_GET(ip, ['country'])), total)" 
     },
     "result": "total"
-  },
+  }
 
 ],
 "timestampField": "timestamp"
