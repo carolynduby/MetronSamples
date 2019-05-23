@@ -116,7 +116,7 @@
       "total": "HLLP_INIT(5,6)"
     },
     "update": {
-      "total": "REDUCE(FILTER(answers, (answer) -> IS_IP(answer)), (city_card, ip) -> HLLP_ADD(city_card, GEO_GET(ip, ['city'])), total)"
+      "total": "REDUCE(answer_cities, (city_card, city) -> HLLP_ADD(city_card, city), total)"
     },
     "result": "total"
   },
@@ -128,7 +128,19 @@
       "total": "HLLP_INIT(5,6)"
     },
     "update": {
-      "total": "REDUCE(FILTER(answers, (answer) -> IS_IP(answer)), (country_card, ip) -> HLLP_ADD(country_card, GEO_GET(ip, ['country'])), total)" 
+      "total": "REDUCE(answer_countries, (country_card, country) -> HLLP_ADD(country_card, country), total)" 
+    },
+    "result": "total"
+  },
+  {
+    "profile": "dns_p15_dns_distinct_resolved_ip_addr",
+    "foreach": "ip_src_addr",
+    "onlyif": "source.type == 'bro' && protocol == 'dns' && exists(answers)",
+    "init": {
+      "total": "SET_INIT()"
+    },
+    "update": {
+      "total": "REDUCE(FILTER(answers, (answer) -> IS_IP(answer)), (resolved_ip_set, ip) -> SET_ADD(resolved_ip_set, ip), total)"
     },
     "result": "total"
   }
