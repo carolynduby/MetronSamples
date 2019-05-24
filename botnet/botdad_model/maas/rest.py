@@ -17,7 +17,13 @@ def predict():
   request_features = []
   for feature_id in range(15):
      arg_name = "p{}".format(feature_id + 1) 
-     request_features.insert(feature_id, float(request.args.get(arg_name)))
+
+     feature_string = request.args.get(arg_name)
+     feature = 0.0
+     if (feature_string):
+        feature = float(feature_string)
+
+     request_features.insert(feature_id, feature)
   print(request_features)
   r = {}
   r['bot_prediction'] = class_map[model.predict(np.array([ request_features ]))[0]]
