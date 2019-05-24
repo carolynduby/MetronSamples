@@ -151,10 +151,27 @@
   <field name="TTLs" type="string" indexed="true" stored="true" multiValued="true" />
   <field name="rejected" type="boolean" indexed="true" stored="true" />
 
-  <field name="top_level_domain" type="pint" indexed="true" stored="true" />
-  <field name="second_level_domain" type="pint" indexed="true" stored="true" />
-  <field name="answer_cities" type="pint" indexed="true" stored="true" />
-  <field name="answer_countries" type="pint" indexed="true" stored="true" />
+  <field name="top_level_domain" type="string" indexed="true" stored="true" />
+  <field name="second_level_domain" type="string" indexed="true" stored="true" />
+  <field name="answer_cities" type="string" indexed="true" stored="true" multiValued="true" />
+  <field name="answer_countries" type="string" indexed="true" stored="true" multiValued="true" />
+
+  <field name="p1" type="pdouble" indexed="true" stored="true" />
+  <field name="p2" type="pdouble" indexed="true" stored="true" />
+  <field name="p3" type="pdouble" indexed="true" stored="true" />
+  <field name="p4" type="pdouble" indexed="true" stored="true" />
+  <field name="p5" type="pdouble" indexed="true" stored="true" />
+  <field name="p6" type="pdouble" indexed="true" stored="true" />
+  <field name="p7" type="pdouble" indexed="true" stored="true" />
+  <field name="p8" type="pdouble" indexed="true" stored="true" />
+  <field name="p9" type="pdouble" indexed="true" stored="true" />
+  <field name="p10" type="pdouble" indexed="true" stored="true" />
+  <field name="p11" type="pdouble" indexed="true" stored="true" />
+  <field name="p12" type="pdouble" indexed="true" stored="true" />
+  <field name="p13" type="pdouble" indexed="true" stored="true" />
+  <field name="p14" type="pdouble" indexed="true" stored="true" />
+  <field name="p15" type="pdouble" indexed="true" stored="true" />
+  <field name="bot_prediction" type="string" indexed="true" stored="true" />
 
   <!--
          * Conn log support

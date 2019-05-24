@@ -137,10 +137,10 @@
     "foreach": "ip_src_addr",
     "onlyif": "source.type == 'bro' && protocol == 'dns' && exists(answers)",
     "init": {
-      "total": "SET_INIT()"
+      "total": "HLLP_INIT()"
     },
     "update": {
-      "total": "REDUCE(FILTER(answers, (answer) -> IS_IP(answer)), (resolved_ip_set, ip) -> SET_ADD(resolved_ip_set, ip), total)"
+      "total": "REDUCE(FILTER(answers, (answer) -> IS_IP(answer)), (resolved_ip_set, ip) -> HLLP_ADD(resolved_ip_set, ip), total)"
     },
     "result": "total"
   }
