@@ -61,7 +61,7 @@
   <field name="domain" type="string" indexed="true" stored="true" />
 
   <!-- Geo Enrichment Fields -->
-  <dynamicField name="*.location_point" type="location" multiValued="false" docValues="true"/>
+  <dynamicField name="*.location_point" type="location" multiValued="false" docValues="false"/>
   <dynamicField name="*_coordinate" type="pdouble" indexed="true" stored="false" docValues="true"/>
   <dynamicField name="*.country" type="string" multiValued="false" docValues="true"/>
   <dynamicField name="*.city" type="string" multiValued="false" docValues="true"/>
