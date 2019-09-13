@@ -1,1 +1,81 @@
-{"enrichment":{"fieldMap":{"geo":["ip_dst_addr","ip_src_addr"],"host":["host"],"stellar":{"config":["top_level_domain := if (exists(query)) then DOMAIN_TO_TLD(query) else null","second_level_domain := if (exists(query)) then DOMAIN_REMOVE_TLD(DOMAIN_REMOVE_SUBDOMAINS(query)) else null","answer_ips := FILTER(answers, (answer) -> IS_IP(answer))","answer_cities := MAP(REDUCE(answer_ips, (cities, ip) -> SET_ADD(cities, GEO_GET(ip, ['city'])), SET_INIT()),(city_list, city) -> LIST_ADD(city_list, city), [])","answer_countries := answer_countries := MAP(REDUCE(answer_ips, (countries, ip) -> SET_ADD(countries, GEO_GET(ip, ['country'])), SET_INIT()),(country_list, country) -> LIST_ADD(country_list, country), [])","window := PROFILE_WINDOW('from 1 hour ago')","profile := PROFILE_GET('dns_p1_dns_request_count', ip_src_addr, window)","p1 := REDUCE(profile, (sum, count) -> sum + count, 0)","p4 :=  if (LENGTH(profile) > 0) then TO_FLOAT(p1)/LENGTH(profile) else 0","p5 := MAX(profile)","profile:= PROFILE_GET('dns_p2_dns_distinct_request', ip_src_addr, window)","p2 := HLLP_CARDINALITY(HLLP_MERGE(profile))","profile := PROFILE_GET('dns_p3_domain_request_count', ip_src_addr, window)","p3_multiset := MULTISET_MERGE(profile)","p3 := MAX(REDUCE(MULTISET_TO_SET(p3_multiset), (max_domain_requests, domain) -> LIST_ADD(max_domain_requests, MAP_GET(domain, p3_multiset)), []))","p3_multiset := null","profile := PROFILE_GET('dns_p6_dns_mx_queries', ip_src_addr, window)","p6 := REDUCE(profile, (sum, count) -> sum + count, 0)","profile := PROFILE_GET('dns_p7_dns_ptr_queries', ip_src_addr, window)","p7 := REDUCE(profile, (sum, count) -> sum + count, 0)","profile := PROFILE_GET('dns_p8_dns_distinct_dns_servers', ip_src_addr, window)","p8 := HLLP_CARDINALITY( HLLP_MERGE(profile))","profile := PROFILE_GET('dns_p9_dns_distinct_top_level_domain', ip_src_addr, window)","p9 := HLLP_CARDINALITY( HLLP_MERGE(profile))","profile := PROFILE_GET('dns_p10_dns_distinct_second_level_domain', ip_src_addr, window)","p10 := HLLP_CARDINALITY( HLLP_MERGE(profile))","p11 := if (p2 > 0) then TO_FLOAT(p1)/p2 else 0","profile := PROFILE_GET( 'dns_p12_dns_num_failed_responses', ip_src_addr, window)","p12 := REDUCE(profile, (sum, count) -> sum + count, 0)","profile := PROFILE_GET( 'dns_p13_dns_distinct_resolved_ip_cities', ip_src_addr, window)","p13 := HLLP_CARDINALITY( HLLP_MERGE(profile))","profile := PROFILE_GET( 'dns_p14_dns_distinct_resolved_ip_countries', ip_src_addr, window)","p14 := HLLP_CARDINALITY( HLLP_MERGE(profile))","profile := PROFILE_GET( 'dns_p15_dns_distinct_resolved_ip_addr', ip_src_addr, window)","p15_distinct_ips:= HLLP_CARDINALITY( HLLP_MERGE(profile))","p15 := if (p15_distinct_ips > 0 && p1 > 100) then TO_FLOAT(p2)/p15_distinct_ips else 0","p15_distinct_ips:=null","features := {'p1':TO_STRING(p1), 'p2':TO_STRING(p2), 'p3':TO_STRING(p3), 'p4':TO_STRING(p4), 'p5':TO_STRING(p5), 'p6':TO_STRING(p6), 'p7':TO_STRING(p7), 'p8':TO_STRING(p8), 'p9':TO_STRING(p9), 'p10':TO_STRING(p10), 'p11':TO_STRING(p11), 'p12':TO_STRING(p12), 'p13':TO_STRING(p13), 'p14':TO_STRING(p14), 'p15':TO_STRING(p15)}","bot_prediction := MAP_GET('bot_prediction', MAAS_MODEL_APPLY(MAAS_GET_ENDPOINT('botdad'), features))","features := null","profile := null","window := null"]}},"fieldToTypeMap":{},"config":{}},"threatIntel":{"fieldMap":{"hbaseThreatIntel":["ip_src_addr","ip_dst_addr"]},"fieldToTypeMap":{"ip_src_addr":["malicious_ip"],"ip_dst_addr":["malicious_ip"]},"config":{},"triageConfig":{"riskLevelRules":[],"aggregator":"MAX","aggregationConfig":{}}},"configuration":{}}
+{
+	"enrichment": {
+		"fieldMap": {
+			"geo": [
+				"ip_dst_addr",
+				"ip_src_addr"
+			],
+			"host": [
+				"host"
+			],
+			"stellar": {
+				"config": [
+					"top_level_domain := if (exists(query)) then DOMAIN_TO_TLD(query) else null",
+					"second_level_domain := if (exists(query)) then DOMAIN_REMOVE_TLD(DOMAIN_REMOVE_SUBDOMAINS(query)) else null",
+					"window := PROFILE_WINDOW('from 1 hour ago')",
+					"profile := PROFILE_GET('dns_p1_dns_request_count', ip_src_addr, window)",
+					"p1 := REDUCE(profile, (sum, count) -> sum + count, 0)",
+					"p4 :=  if (LENGTH(profile) > 0) then TO_FLOAT(p1)/LENGTH(profile) else 0",
+					"p5 := MAX(profile)",
+					"profile:= PROFILE_GET('dns_p2_dns_distinct_request', ip_src_addr, window)",
+					"p2 := HLLP_CARDINALITY(HLLP_MERGE(profile))",
+					"profile := PROFILE_GET('dns_p3_domain_request_count', ip_src_addr, window)",
+					"p3_multiset := MULTISET_MERGE(profile)",
+					"p3 := MAX(REDUCE(MULTISET_TO_SET(p3_multiset), (max_domain_requests, domain) -> LIST_ADD(max_domain_requests, MAP_GET(domain, p3_multiset)), []))",
+					"p3_multiset := null",
+					"profile := PROFILE_GET('dns_p6_dns_mx_queries', ip_src_addr, window)",
+					"p6 := REDUCE(profile, (sum, count) -> sum + count, 0)",
+					"profile := PROFILE_GET('dns_p7_dns_ptr_queries', ip_src_addr, window)",
+					"p7 := REDUCE(profile, (sum, count) -> sum + count, 0)",
+					"profile := PROFILE_GET('dns_p8_dns_distinct_dns_servers', ip_src_addr, window)",
+					"p8 := HLLP_CARDINALITY( HLLP_MERGE(profile))",
+					"profile := PROFILE_GET('dns_p9_dns_distinct_top_level_domain', ip_src_addr, window)",
+					"p9 := HLLP_CARDINALITY( HLLP_MERGE(profile))",
+					"profile := PROFILE_GET('dns_p10_dns_distinct_second_level_domain', ip_src_addr, window)",
+					"p10 := HLLP_CARDINALITY( HLLP_MERGE(profile))",
+					"p11 := if (p2 > 0) then TO_FLOAT(p1)/p2 else 0",
+					"profile := PROFILE_GET( 'dns_p12_dns_num_failed_responses', ip_src_addr, window)",
+					"p12 := REDUCE(profile, (sum, count) -> sum + count, 0)",
+					"profile := PROFILE_GET( 'dns_p13_dns_distinct_resolved_ip_cities', ip_src_addr, window)",
+					"p13 := HLLP_CARDINALITY( HLLP_MERGE(profile))",
+					"profile := PROFILE_GET( 'dns_p14_dns_distinct_resolved_ip_countries', ip_src_addr, window)",
+					"p14 := HLLP_CARDINALITY( HLLP_MERGE(profile))",
+					"profile := PROFILE_GET( 'dns_p15_dns_distinct_resolved_ip_addr', ip_src_addr, window)",
+					"p15_distinct_ips:= HLLP_CARDINALITY( HLLP_MERGE(profile))",
+					"p15 := if (p15_distinct_ips > 0 && p1 > 100) then TO_FLOAT(p2)/p15_distinct_ips else 0",
+					"p15_distinct_ips:=null",
+					"features := {'p1':TO_STRING(p1), 'p2':TO_STRING(p2), 'p3':TO_STRING(p3), 'p4':TO_STRING(p4), 'p5':TO_STRING(p5), 'p6':TO_STRING(p6), 'p7':TO_STRING(p7), 'p8':TO_STRING(p8), 'p9':TO_STRING(p9), 'p10':TO_STRING(p10), 'p11':TO_STRING(p11), 'p12':TO_STRING(p12), 'p13':TO_STRING(p13), 'p14':TO_STRING(p14), 'p15':TO_STRING(p15)}",
+					"bot_prediction := MAP_GET('bot_prediction', MAAS_MODEL_APPLY(MAAS_GET_ENDPOINT('botdad'), features))",
+					"features := null",
+					"profile := null",
+					"window := null"
+				]
+			}
+		},
+		"fieldToTypeMap": {},
+		"config": {}
+	},
+	"threatIntel": {
+		"fieldMap": {
+			"hbaseThreatIntel": [
+				"ip_src_addr",
+				"ip_dst_addr"
+			]
+		},
+		"fieldToTypeMap": {
+			"ip_src_addr": [
+				"malicious_ip"
+			],
+			"ip_dst_addr": [
+				"malicious_ip"
+			]
+		},
+		"config": {},
+		"triageConfig": {
+			"riskLevelRules": [],
+			"aggregator": "MAX",
+			"aggregationConfig": {}
+		}
+	},
+	"configuration": {}
+}
