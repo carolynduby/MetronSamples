@@ -1,0 +1,43 @@
+{
+    "cacheConfig": {},
+    "errorTopic": null,
+    "errorWriterClassName": null,
+    "errorWriterNumTasks": 1,
+    "errorWriterParallelism": 1,
+    "fieldTransformations": [],
+    "filterClassName": null,
+    "mergeMetadata": false,
+    "numAckers": null,
+    "numWorkers": null,
+    "outputTopic": null,
+    "parserClassName": "org.apache.metron.parsers.csv.CSVParser",
+    "parserConfig": {
+        "columns": {
+            "destination_host": 3,
+            "relative_time": 0,
+            "source_host": 2,
+            "source_user": 1
+        },
+        "shew.cf": "t",
+        "shew.enrichmentType": "redteam",
+        "shew.keyColumns": [
+            "relative_time",
+            "source_user",
+            "source_host",
+            "destination_host"
+        ],
+        "shew.table": "threatintel"
+    },
+    "parserNumTasks": 1,
+    "parserParallelism": 1,
+    "rawMessageStrategy": "DEFAULT",
+    "rawMessageStrategyConfig": {},
+    "readMetadata": false,
+    "securityProtocol": null,
+    "sensorTopic": "redteam",
+    "spoutConfig": {},
+    "spoutNumTasks": 1,
+    "spoutParallelism": 1,
+    "stormConfig": {},
+    "writerClassName": "org.apache.metron.enrichment.writer.SimpleHbaseEnrichmentWriter"
+}

@@ -1,0 +1,18 @@
+{
+    "configuration": {},
+    "enrichment": {
+        "config": {},
+        "fieldMap": {},
+        "fieldToTypeMap": {}
+    },
+    "threatIntel": {
+        "config": {},
+        "fieldMap": {},
+        "fieldToTypeMap": {},
+        "triageConfig": {
+            "aggregationConfig": {},
+            "aggregator": "MAX",
+            "riskLevelRules": []
+        }
+    }
+}

@@ -1,0 +1,50 @@
+{
+    "cacheConfig": {},
+    "errorTopic": null,
+    "errorWriterClassName": null,
+    "errorWriterNumTasks": 1,
+    "errorWriterParallelism": 1,
+    "fieldTransformations": [
+        {
+            "config": {
+                "relative_time": "TO_INTEGER(relative_time)"
+            },
+            "input": [],
+            "output": [
+                "relative_time"
+            ],
+            "transformation": "STELLAR"
+        }
+    ],
+    "filterClassName": null,
+    "mergeMetadata": false,
+    "numAckers": null,
+    "numWorkers": null,
+    "outputTopic": null,
+    "parserClassName": "org.apache.metron.parsers.csv.CSVParser",
+    "parserConfig": {
+        "columns": {
+            "auth_orientation": 7,
+            "auth_type": 5,
+            "dest_host": 4,
+            "dest_user": 2,
+            "logon_type": 6,
+            "relative_time": 0,
+            "source_host": 3,
+            "source_user": 1,
+            "status": 8
+        }
+    },
+    "parserNumTasks": 1,
+    "parserParallelism": 1,
+    "rawMessageStrategy": "DEFAULT",
+    "rawMessageStrategyConfig": {},
+    "readMetadata": false,
+    "securityProtocol": null,
+    "sensorTopic": "authcsv",
+    "spoutConfig": {},
+    "spoutNumTasks": 1,
+    "spoutParallelism": 1,
+    "stormConfig": {},
+    "writerClassName": null
+}

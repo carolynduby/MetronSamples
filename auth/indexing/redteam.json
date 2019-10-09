@@ -1,0 +1,17 @@
+{
+    "elasticsearch": {
+        "batchSize": 1,
+        "enabled": true,
+        "index": "redteam"
+    },
+    "hdfs": {
+        "batchSize": 1,
+        "enabled": true,
+        "index": "redteam"
+    },
+    "solr": {
+        "batchSize": 1,
+        "enabled": true,
+        "index": "redteam"
+    }
+}

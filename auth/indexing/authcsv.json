@@ -1,0 +1,17 @@
+{
+    "elasticsearch": {
+        "batchSize": 1,
+        "enabled": false,
+        "index": "authcsv"
+    },
+    "hdfs": {
+        "batchSize": 1,
+        "enabled": true,
+        "index": "authcsv"
+    },
+    "solr": {
+        "batchSize": 1,
+        "enabled": false,
+        "index": "authcsv"
+    }
+}
