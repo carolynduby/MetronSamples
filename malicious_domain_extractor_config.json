@@ -1,0 +1,12 @@
+{
+    "config" : {
+       "zk_quorum" : "{zookeeper}"
+       ,"columns" : {
+           {columns}
+       }
+       ,"indicator_column" : "domain"
+       ,"type" : "malicious_domain"
+       ,"separator" : ","
+    }
+    , "extractor" : "CSV"
+}
