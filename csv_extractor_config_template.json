@@ -1,0 +1,12 @@
+{
+    "config" : {
+       "zk_quorum" : "{zookeeper}"
+       ,"columns" : {
+           {columns}
+       }
+       ,"indicator_column" : "{key_column_name}"
+       ,"type" : "{enrichment_name}"
+       ,"separator" : ","
+    }
+    , "extractor" : "CSV"
+}
