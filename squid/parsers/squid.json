@@ -1,0 +1,48 @@
+{
+    "cacheConfig": {},
+    "errorTopic": null,
+    "errorWriterClassName": null,
+    "errorWriterNumTasks": 1,
+    "errorWriterParallelism": 1,
+    "fieldTransformations": [
+        {
+            "config": {
+                "domain_without_subdomains": "DOMAIN_REMOVE_SUBDOMAINS(full_hostname)",
+                "enrichment_majestic_1m": "ENRICHMENT_EXISTS('majestic_million', domain_without_subdomains, 'enrichment', 't')",
+                "full_hostname": "IF (IS_URL(url)) THEN URL_TO_HOST(url) ELSE GET_FIRST(SPLIT(url, ':'))",
+                "is_potential_typosquat": "BLOOM_EXISTS(OBJECT_GET('/apps/metron/reference/top10k_typosquat_filter.ser'), DOMAIN_REMOVE_TLD(domain_without_subdomains))"
+            },
+            "input": [],
+            "output": [
+                "full_hostname",
+                "domain_without_subdomains",
+                "is_potential_typosquat",
+                "enrichment_majestic_1m"
+            ],
+            "transformation": "STELLAR"
+        }
+    ],
+    "filterClassName": null,
+    "mergeMetadata": false,
+    "numAckers": null,
+    "numWorkers": null,
+    "outputTopic": null,
+    "parserClassName": "org.apache.metron.parsers.GrokParser",
+    "parserConfig": {
+        "grokPath": "/apps/metron/patterns/squid",
+        "patternLabel": "SQUID_DELIMITED",
+        "timestampField": "timestamp"
+    },
+    "parserNumTasks": 1,
+    "parserParallelism": 1,
+    "rawMessageStrategy": "DEFAULT",
+    "rawMessageStrategyConfig": {},
+    "readMetadata": false,
+    "securityProtocol": null,
+    "sensorTopic": "squid",
+    "spoutConfig": {},
+    "spoutNumTasks": 1,
+    "spoutParallelism": 1,
+    "stormConfig": {},
+    "writerClassName": null
+}

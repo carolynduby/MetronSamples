@@ -1,0 +1,17 @@
+{
+    "elasticsearch": {
+        "batchSize": 1,
+        "enabled": true,
+        "index": "squid"
+    },
+    "hdfs": {
+        "batchSize": 1,
+        "enabled": true,
+        "index": "squid"
+    },
+    "solr": {
+        "batchSize": 1,
+        "enabled": true,
+        "index": "squid"
+    }
+}

@@ -1,0 +1,36 @@
+{
+    "configuration": {},
+    "enrichment": {
+        "config": {},
+        "fieldMap": {
+            "geo": [
+                "ip_dst_addr"
+            ]
+        },
+        "fieldToTypeMap": {}
+    },
+    "threatIntel": {
+        "config": {},
+        "fieldMap": {
+            "stellar": {
+                "config": [
+                    "is_alert := (is_alert) || (not(enrichment_majestic_1m) && is_potential_typosquat)"
+                ]
+            }
+        },
+        "fieldToTypeMap": {},
+        "triageConfig": {
+            "aggregationConfig": {},
+            "aggregator": "MAX",
+            "riskLevelRules": [
+                {
+                    "comment": "Typosquat of top 10K majestic domain",
+                    "name": "Typosquat Detection",
+                    "reason": "FORMAT('%s is a potential typosquatted domain from the top 10k domains from majestic', domain_without_subdomains)",
+                    "rule": "is_potential_typosquat",
+                    "score": "50"
+                }
+            ]
+        }
+    }
+}
