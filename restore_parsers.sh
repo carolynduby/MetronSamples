@@ -1,10 +1,21 @@
 #!/bin/sh
 
+if [ $# -ne 1 ]; then 
+    echo "Usage: " $0 " sensor"
+    exit 1
+fi
+
+config_count=`find . -name $1.json | wc -l`
+if [ $config_count -lt 1 ]; then 
+    echo "ERROR: There are no configuration files for sensor '"$1"'"
+    exit 1
+fi
+
 source /etc/default/metron
-config_dir=/tmp/restore_config_tool
+config_dir=`mktemp -d -t restoreconfigXXXXX`
 
 # pull the latest config files
-sudo /usr/hcp/current/metron/bin/zk_load_configs.sh -m PULL -o $config_dir -z $ZOOKEEPER -f
+/usr/hcp/current/metron/bin/zk_load_configs.sh -m PULL -o $config_dir -z $ZOOKEEPER -f
 
 # copy the files into the zk config dir
 cp -r enrichments/$1.json $config_dir/enrichments
@@ -16,7 +27,7 @@ if [ ! -f "$config_dir/profiler.json" ]; then
     profiles_copied=true
 fi 
  
-sudo /usr/hcp/current/metron/bin/zk_load_configs.sh -m PUSH -i $config_dir -z $ZOOKEEPER 
+/usr/hcp/current/metron/bin/zk_load_configs.sh -m PUSH -i $config_dir -z $ZOOKEEPER 
 
 if [ "$profiles_copied" = false ]; then
     cat profiles/profiler.json | python ../profiler_patch.py > $config_dir/profiler_patch.json
