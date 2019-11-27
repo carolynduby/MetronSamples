@@ -1,10 +1,15 @@
 #!/bin/sh
 
+if [ $# -ne 1 ]; then
+    echo "Usage: " $0 " sensor"
+    exit 1
+fi
+
 source /etc/default/metron
-config_dir=/tmp/save_config_tool
+config_dir=`mktemp -d -t saveconfigXXXXX`
 
 # pull the latest config files
-sudo /usr/hcp/current/metron/bin/zk_load_configs.sh -m PULL -o $config_dir -z $ZOOKEEPER -f
+/usr/hcp/current/metron/bin/zk_load_configs.sh -m PULL -o $config_dir -z $ZOOKEEPER -f
 
 # create the repo directories if necessary
 mkdir -p enrichments
